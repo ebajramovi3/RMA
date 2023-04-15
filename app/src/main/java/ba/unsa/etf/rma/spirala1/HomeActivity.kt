@@ -2,59 +2,67 @@ package ba.unsa.etf.rma.spirala1
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavDestination
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class HomeActivity : AppCompatActivity() {
-    private lateinit var games: RecyclerView
-    private lateinit var gamesAdapter: GameListAdapter
-    private var gamesList = GameData.getAll()
-
+    private var lastGameTitle: String? = null
+    private lateinit var viewModel: DataViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
-
-        var homeButton = findViewById<Button>(R.id.home_button)
-        var detailsButton = findViewById<Button>(R.id.details_button)
-
-        homeButton.isEnabled = false
-
-        if(!intent.hasExtra("last_game"))
-        detailsButton.isEnabled = false
-
-        games = findViewById(R.id.game_list)
-        games.layoutManager = LinearLayoutManager(
-            this,
-            LinearLayoutManager.VERTICAL,
-            false
-        )
-
-        gamesAdapter = GameListAdapter(arrayListOf()) { game ->
-            showGameDetails(game)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+        val navView: BottomNavigationView = findViewById(R.id.bottom_nav)
+        navView.setupWithNavController(navController)
+        navHostFragment.apply {
+            bundleOf("last_game" to lastGameTitle)
         }
-        games.adapter = gamesAdapter
-        gamesAdapter.updateGames(gamesList)
 
+        viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
+        navView.menu.findItem(R.id.gameDetailsItem).isEnabled = false
 
-        detailsButton.setOnClickListener {
-            val extras = intent.extras
-            if (extras != null) {
-                val intent = Intent(this, GameDetailsActivity::class.java).apply {
-                    putExtra("game_title", extras.getString("last_game"))
-                }
-                startActivity(intent)
+        navView.setOnItemSelectedListener { item ->
+            viewModel.getSelectedData().observe(this) {
+                lastGameTitle = it
             }
+
+            val visibleFragment = getVisibleFragment()
+
+            when(item.itemId  ) {
+                R.id.gameDetailsItem -> {
+                    if(visibleFragment is HomeFragment) {
+                        val action =
+                            HomeFragmentDirections.actionHomeItemToGameDetailsItem(lastGameTitle!!)
+                        navController.navigate(action)
+                    }
+
+                }
+                else -> {
+                    if(visibleFragment is GameDetailsFragment){
+                        val action = GameDetailsFragmentDirections.actionGameDetailsItemToHomeItem()
+                        navController.navigate(action)
+                    }
+
+                    if (!navView.menu.findItem(R.id.gameDetailsItem).isEnabled && lastGameTitle != null)
+                        navView.menu.findItem(R.id.gameDetailsItem).isEnabled = true
+                }
+            }
+            true
         }
     }
 
-    private fun showGameDetails(game: Game) {
-        val intent = Intent(this, GameDetailsActivity::class.java).apply {
-            putExtra("game_title", game.title)
-        }
-        startActivity(intent)
+    private fun getVisibleFragment(): Fragment? {
+        return supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.get(0)
     }
-
 }

@@ -150,12 +150,14 @@ class GameData{
             )
         }
 
-
-        fun getDetails(title: String) :Game?{
+        fun getDetails(title: String) :Game{
             var allGames = this.getAll()
-            return allGames.find {
+            var game = allGames.find {
                 it.title == title
             }
+            if(game != null) return game
+            return Game("Test", "Test", "Test", 0.0, "Test", "Test", "Test", "Test","Test","Test",
+                listOf())
         }
     }
 
