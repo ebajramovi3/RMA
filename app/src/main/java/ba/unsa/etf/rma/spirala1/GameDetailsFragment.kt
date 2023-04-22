@@ -1,6 +1,7 @@
 package ba.unsa.etf.rma.spirala1
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -32,7 +34,7 @@ class GameDetailsFragment : Fragment() {
     ): View? {
         var view = inflater.inflate(R.layout.game_details_fragment, container, false)
 
-        title = view.findViewById(R.id.game_title_textview)
+        title = view.findViewById(R.id.item_title_textview)
         coverImage = view.findViewById(R.id.cover_imageview)
         releaseDate = view.findViewById(R.id.release_date_textview)
         platform = view.findViewById(R.id.platform_textview)

@@ -1,36 +1,66 @@
 package ba.unsa.etf.rma.spirala1
 
-import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavDestination
-import androidx.navigation.findNavController
+import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
+
 class HomeActivity : AppCompatActivity() {
     private var lastGameTitle: String? = null
     private lateinit var viewModel: DataViewModel
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-        val navController = navHostFragment.navController
-        val navView: BottomNavigationView = findViewById(R.id.bottom_nav)
-        navView.setupWithNavController(navController)
-        navHostFragment.apply {
-            bundleOf("last_game" to lastGameTitle)
-        }
-
+        navController = navHostFragment.navController
         viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
-        navView.menu.findItem(R.id.gameDetailsItem).isEnabled = false
+
+        if(resources.configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
+            doOnLandscape()
+        else
+            doOnPortrait()
+    }
+
+    private fun getVisibleFragment(): Fragment? {
+        return supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.get(0)
+    }
+
+
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+       super.onConfigurationChanged(newConfig)
+        setContentView(R.layout.home_activity)
+
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.navController
+        //viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
+
+        if(resources.configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
+            doOnLandscape()
+         else
+           doOnPortrait()
+
+    }
+
+    private fun doOnLandscape(){
+        val navView: BottomNavigationView = findViewById(R.id.bottom_nav)
+        navController.setGraph(R.navigation.nav)
+        navView.setupWithNavController(navController)
+
+        if (lastGameTitle == null)
+            navView.menu.findItem(R.id.gameDetailsItem).isEnabled = false
 
         navView.setOnItemSelectedListener { item ->
             viewModel.getSelectedData().observe(this) {
@@ -38,19 +68,19 @@ class HomeActivity : AppCompatActivity() {
             }
 
             val visibleFragment = getVisibleFragment()
-
-            when(item.itemId  ) {
+            when (item.itemId) {
                 R.id.gameDetailsItem -> {
-                    if(visibleFragment is HomeFragment) {
+                    if (visibleFragment is HomeFragment) {
                         val action =
                             HomeFragmentDirections.actionHomeItemToGameDetailsItem(lastGameTitle!!)
                         navController.navigate(action)
                     }
-
                 }
+
                 else -> {
-                    if(visibleFragment is GameDetailsFragment){
-                        val action = GameDetailsFragmentDirections.actionGameDetailsItemToHomeItem()
+                    if (visibleFragment is GameDetailsFragment) {
+                        val action =
+                            GameDetailsFragmentDirections.actionGameDetailsItemToHomeItem()
                         navController.navigate(action)
                     }
 
@@ -62,7 +92,9 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun getVisibleFragment(): Fragment? {
-        return supportFragmentManager.findFragmentById(R.id.nav_host_fragment)?.childFragmentManager?.fragments?.get(0)
+    private fun doOnPortrait(){
+        val id = navController.currentDestination?.id
+        navController.popBackStack(id!!,true)
+        navController.navigate(R.id.gameDetailsItem, bundleOf("game_title" to GameData.getAll()[0].title))
     }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_land"
+    app:startDestination="@id/gameDetailsItem">
+
+    <fragment
+        android:id="@+id/gameDetailsItem"
+        android:name="ba.unsa.etf.rma.spirala1.GameDetailsFragment"
+        android:label="GameDetailsFragment" >
+        <argument
+            android:name="game_title"
+            app:argType="string"
+            />
+    </fragment>
+</navigation>
