@@ -85,11 +85,9 @@ class OwnEspressoTests {
     fun testPortrait() {
         val activityScenario = ActivityScenario.launch(HomeActivity::class.java)
 
-        /*activityScenario.onActivity { activity ->
+        activityScenario.onActivity { activity ->
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         }
-
-         */
 
         onView(withId(R.id.gameDetailsItem)).check(matches(not(isEnabled())))
         var game = GameData.getAll()[GameData.getAll().size - 1]
