@@ -27,9 +27,9 @@ class HomeActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
         if(resources.configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
-            doOnLandscape()
-        else
             doOnPortrait()
+        else
+           doOnLandscape()
     }
 
     private fun getVisibleFragment(): Fragment? {
@@ -48,13 +48,13 @@ class HomeActivity : AppCompatActivity() {
         //viewModel = ViewModelProvider(this).get(DataViewModel::class.java)
 
         if(resources.configuration.orientation != Configuration.ORIENTATION_LANDSCAPE)
-            doOnLandscape()
+            doOnPortrait()
          else
-           doOnPortrait()
+           doOnLandscape()
 
     }
 
-    private fun doOnLandscape(){
+    private fun doOnPortrait(){
         val navView: BottomNavigationView = findViewById(R.id.bottom_nav)
         navController.setGraph(R.navigation.nav)
         navView.setupWithNavController(navController)
@@ -92,7 +92,7 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-    private fun doOnPortrait(){
+    private fun doOnLandscape(){
         val id = navController.currentDestination?.id
         navController.popBackStack(id!!,true)
         navController.navigate(R.id.gameDetailsItem, bundleOf("game_title" to GameData.getAll()[0].title))

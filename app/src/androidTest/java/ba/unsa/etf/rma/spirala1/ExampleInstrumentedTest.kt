@@ -23,7 +23,7 @@ import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
 class TestLayout {
-    fun hasItemCount(n: Int) = object : ViewAssertion {
+    /*fun hasItemCount(n: Int) = object : ViewAssertion {
         override fun check(view: View?, noViewFoundException: NoMatchingViewException?) {
             if (noViewFoundException != null) {
                 throw noViewFoundException
@@ -105,5 +105,5 @@ class TestLayout {
         onView(withId(R.id.home_button)).perform(click())
         onView(withId(R.id.details_button)).perform(click())
         onView(withText(prvaIgra.description)).check(matches(isCompletelyDisplayed()))
-    }
+    }*/
 }

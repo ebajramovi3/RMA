@@ -45,7 +45,9 @@ class GameDetailsFragment : Fragment() {
         genre = view.findViewById(R.id.genre_textview)
 
         impressionsView = view.findViewById(R.id.user_impressions_list)
-        impressionsView.layoutManager = LinearLayoutManager(activity)
+
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        impressionsView.layoutManager = layoutManager
         impressionsAdapter = UserImpressionsListAdapter(listOf())
         impressionsView.adapter = impressionsAdapter
 
