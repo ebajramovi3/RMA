@@ -1,10 +1,13 @@
-package ba.unsa.etf.rma.spirala1
+package ba.etf.rma23.projekat
 
 import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +15,13 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
+import ba.etf.rma23.projekat.data.repositories.GamesRepository
+import ba.unsa.etf.rma.spirala1.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 
 class HomeFragment: Fragment() {
@@ -19,7 +29,8 @@ class HomeFragment: Fragment() {
     private lateinit var gamesAdapter: GameListAdapter
     private var gamesList = GameData.getAll()
     private lateinit var viewModel: DataViewModel
-
+    private lateinit var searchButton: Button
+    private lateinit var searchText: EditText
     companion object {
         fun newInstance(): HomeFragment = HomeFragment()
     }
@@ -42,6 +53,27 @@ class HomeFragment: Fragment() {
         games.adapter = gamesAdapter
         gamesAdapter.updateGames(gamesList)
 
+        searchButton = view.findViewById(R.id.search_button)
+        searchButton.setOnClickListener {
+            searchText = view.findViewById(R.id.search_query_edittext)
+            val scope = CoroutineScope(Job() + Dispatchers.Main)
+            scope.launch{
+
+                AccountGamesRepository.saveGame(Game(47076,"Age of Empires: Gold Edition","","",10.0,"","","","","","",listOf<UserImpression>()))
+
+               /* var gamesRepository = GamesRepository()
+            val result = gamesRepository.getGamesByName(searchText.text.toString())
+            when (result) {
+                is List<Game> -> {
+                    onSuccess(result)
+                    gamesAdapter.updateGames(result)
+                }
+                else-> onError()
+            }*/
+        }
+
+        }
+
         return view
     }
 
@@ -58,20 +90,22 @@ class HomeFragment: Fragment() {
 
         } else {
             viewModel = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
-            viewModel.setData(game.title)
+            game.title?.let { viewModel.setData(it) }
 
-            var action = HomeFragmentDirections.actionHomeItemToGameDetailsItem(game.title)
-            findNavController().navigate(action)
+            var action = game.title?.let { HomeFragmentDirections.actionHomeItemToGameDetailsItem(it) }
+            if (action != null) {
+                findNavController().navigate(action)
+            }
         }
     }
 
-    private fun populateViewForOrientation(inflater: LayoutInflater, viewGroup: ViewGroup?) {
-        viewGroup!!.removeAllViewsInLayout()
-        var subview = inflater.inflate(R.layout.home_fragment, viewGroup, false)
-
-        if(resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            var action = HomeFragmentDirections.actionHomeItemToGameDetailsItem(GameData.getAll()[0].title)
-            findNavController().navigate(action)
-        }
+    fun onSuccess(games: List<Game>){
+        val toast = Toast.makeText(context, "Game found", Toast.LENGTH_SHORT)
+        toast.show()
+        gamesAdapter.updateGames(games)
+    }
+    fun onError() {
+        val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
+        toast.show()
     }
 }

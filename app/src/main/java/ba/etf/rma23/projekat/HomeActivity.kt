@@ -1,8 +1,7 @@
-package ba.unsa.etf.rma.spirala1
+package ba.etf.rma23.projekat
 
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -10,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import ba.etf.rma23.projekat.HomeFragmentDirections
+import ba.unsa.etf.rma.spirala1.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

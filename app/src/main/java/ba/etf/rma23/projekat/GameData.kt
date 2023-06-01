@@ -1,10 +1,10 @@
-package ba.unsa.etf.rma.spirala1
+package ba.etf.rma23.projekat
 
 class GameData{
     companion object{
         fun getAll(): List<Game> {
             return listOf(
-                Game(
+               /* Game(
                     "Call of Duty: Modern Warfare II",
                     "PlayStation 5, Xbox One",
                     "October 28, 2022",
@@ -146,17 +146,17 @@ class GameData{
                     "Action",
                     "Valorant is a free-to-play first-person tactical hero shooter developed and published by Riot Games, for Windows. Teased under the codename Project A in October 2019, the game began a closed beta period with limited access on April 7, 2020, followed by a release on June 2, 2020.",
                     listOf()
-                )
+                )*/
             )
         }
 
-        fun getDetails(title: String) :Game{
-            var allGames = this.getAll()
+        fun getDetails(title: String) : Game {
+            var allGames = getAll()
             var game = allGames.find {
                 it.title == title
             }
             if(game != null) return game
-            return Game("Test", "Test", "Test", 0.0, "Test", "Test", "Test", "Test","Test","Test",
+            return Game(1,"Test", "Test", "Test", 0.0, "Test", "Test", "Test", "Test","Test","Test",
                 listOf())
         }
     }

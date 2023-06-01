@@ -1,7 +1,6 @@
-package ba.unsa.etf.rma.spirala1
+package ba.etf.rma23.projekat
 
 import android.content.Context
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ba.unsa.etf.rma.spirala1.R
 
 class GameDetailsFragment : Fragment() {
     private lateinit var game: Game
@@ -50,7 +49,6 @@ class GameDetailsFragment : Fragment() {
         impressionsView.layoutManager = layoutManager
         impressionsAdapter = UserImpressionsListAdapter(listOf())
         impressionsView.adapter = impressionsAdapter
-
         game = GameData.getDetails(arguments?.getString("game_title", "")!!)
 
         impressions = game.userImpressions.sortedByDescending { it.timestamp }

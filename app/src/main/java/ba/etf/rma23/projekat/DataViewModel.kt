@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.spirala1
+package ba.etf.rma23.projekat
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/gameDetailsItem"
-        android:name="ba.unsa.etf.rma.spirala1.GameDetailsFragment"
+        android:name="ba.etf.rma23.projekat.GameDetailsFragment"
         android:label="GameDetailsFragment" >
         <argument
             android:name="game_title"

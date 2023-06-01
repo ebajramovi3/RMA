@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.spirala1
+package ba.etf.rma23.projekat
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import ba.unsa.etf.rma.spirala1.R
 
 class UserImpressionsListAdapter (
     private var userImpression: List<UserImpression>
