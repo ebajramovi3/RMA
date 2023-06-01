@@ -25,29 +25,25 @@ object AccountGamesRepository {
         return true
     }
 
-    suspend fun getSavedGames(): List<Game>{
-        return emptyList()
+    suspend fun getSavedGames(): List<Game> {
+        var response = AccountApiConfig.retrofit.getSavedGames(getHash()).body() ?: emptyList()
+        val games: MutableList<Game> = mutableListOf()
+        for(i in response.indices){
+            var game = GamesRepository.getGamesByName(response[i].name).get(0)
+            games.add(game)
+        }
+        return games
     }
 
     suspend fun saveGame(game: Game): Game{
-        var mainObject = JSONObject();            // Host object
-        var requestObject = JSONObject();         // Included object
+        var body = AccountApi.InputClass(AccountApi.SendGame(game.id, game.title))
 
-            requestObject.put("igdb_id", game.id)
-            requestObject.put("name", game.title)
-
-            mainObject.put("game", requestObject)
-
-        val gson = Gson()
-
-
-        var i = AccountApiConfig.retrofit.saveGame(getHash(), mainObject.toString())
-        i.body()?.name?.let { Log.d(null, it) }
+        var i = AccountApiConfig.retrofit.saveGame(getHash(), body)
         return game
     }
 
-    suspend fun removeGame(id: Int): Boolean? {
-        return AccountApiConfig.retrofit.deleteGame(getHash(), id).body()
+    suspend fun removeGame(id: Int): String {
+        return AccountApiConfig.retrofit.deleteGame(getHash(), id).body() ?: ""
     }
 
 
