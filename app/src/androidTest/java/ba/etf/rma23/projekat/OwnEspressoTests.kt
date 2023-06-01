@@ -1,4 +1,4 @@
-package ba.unsa.etf.rma.spirala1
+package ba.etf.rma23.projekat
 
 import android.content.pm.ActivityInfo
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -11,6 +11,7 @@ import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import ba.unsa.etf.rma.spirala1.R
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matchers.not
 import org.junit.Rule
@@ -92,7 +93,8 @@ class OwnEspressoTests {
         onView(withId(R.id.gameDetailsItem)).check(matches(not(isEnabled())))
         var game = GameData.getAll()[GameData.getAll().size - 1]
         onView(withId(R.id.gameDetailsItem)).check(matches(isDisplayed()))
-        onView(withId(R.id.game_list)).perform(RecyclerViewActions.scrollToPosition<ViewHolder>(GameData.getAll().size - 1))
+        onView(withId(R.id.game_list)).perform(RecyclerViewActions.scrollToPosition<ViewHolder>(
+            GameData.getAll().size - 1))
             .check(
                 matches(
                     hasDescendant(withText(game.title))

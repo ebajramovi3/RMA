@@ -10,7 +10,7 @@ import java.util.Collections.emptyList
 import java.util.Date
 import kotlin.math.roundToInt
 
-class GamesRepository {
+object GamesRepository {
     suspend fun getGamesByName(name:String):List<Game>{
         return withContext(Dispatchers.IO) {
             val response = IGDBApiConfig.retrofit.getGamesByName(name)

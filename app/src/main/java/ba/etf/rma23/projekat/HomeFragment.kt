@@ -60,7 +60,7 @@ class HomeFragment: Fragment() {
             scope.launch{
 
                 AccountGamesRepository.saveGame(Game(47076,"Age of Empires: Gold Edition","","",10.0,"","","","","","",listOf<UserImpression>()))
-
+               // AccountGamesRepository.removeGame(0)
                /* var gamesRepository = GamesRepository()
             val result = gamesRepository.getGamesByName(searchText.text.toString())
             when (result) {
