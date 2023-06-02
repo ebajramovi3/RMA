@@ -76,17 +76,17 @@ class RepositoriesUnitTest {
 
         var res2 = GamesRepository.getGamesByName("Hitman")
         assertThat(res2, CoreMatchers.hasItem<Game>(Matchers.hasProperty("id",CoreMatchers.equalTo(11157))))
-    }
+    }*/
 
     //ako vam ovaj test nekada pada, a nekada prolazi vjerovatno je ista greška kao u a2
     @Test
     fun a6_obrisiIgre() = runBlocking {
         var res=AccountGamesRepository.getSavedGames()
         assertThat(res.size,CoreMatchers.equalTo(2))
-        AccountGamesRepository.removeGame(res.get(0))
+        AccountGamesRepository.removeGame(res.get(0).id)
         res=AccountGamesRepository.getSavedGames()
         assertThat(res.size,CoreMatchers.equalTo(1))
-        AccountGamesRepository.removeGame(res.get(0))
+        AccountGamesRepository.removeGame(res.get(0).id)
         res=AccountGamesRepository.getSavedGames()
         assertThat(res.size,CoreMatchers.equalTo(0))
     }
@@ -97,5 +97,5 @@ class RepositoriesUnitTest {
         GamesRepository.getGamesByName("Age of Empires")
         var res = GamesRepository.sortGames()
         assertThat(res.get(0).id,CoreMatchers.equalTo(24273))
-    }*/
+    }
 }

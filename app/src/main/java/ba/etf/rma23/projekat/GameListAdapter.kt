@@ -5,6 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
+import ba.etf.rma23.projekat.data.repositories.GamesRepository
 import ba.unsa.etf.rma.spirala1.R
 
 class GameListAdapter(
@@ -28,8 +30,9 @@ class GameListAdapter(
         holder.itemView.setOnClickListener{ onItemClicked(games[position]) }
     }
 
-    fun updateGames(movies: List<Game>) {
-        this.games = movies
+    fun updateGames(gamess: List<Game>) {
+        this.games = games
+        GamesRepository.gamesDisplayed = games
         notifyDataSetChanged()
     }
 

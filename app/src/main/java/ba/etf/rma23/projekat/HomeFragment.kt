@@ -2,6 +2,7 @@ package ba.etf.rma23.projekat
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,18 +59,14 @@ class HomeFragment: Fragment() {
             searchText = view.findViewById(R.id.search_query_edittext)
             val scope = CoroutineScope(Job() + Dispatchers.Main)
             scope.launch{
-
-                AccountGamesRepository.saveGame(Game(47076,"Age of Empires: Gold Edition","","",10.0,"","","","","","",listOf<UserImpression>()))
-               // AccountGamesRepository.removeGame(0)
-               /* var gamesRepository = GamesRepository()
-            val result = gamesRepository.getGamesByName(searchText.text.toString())
+            var result = GamesRepository.getGamesByName(searchText.text.toString())
             when (result) {
                 is List<Game> -> {
                     onSuccess(result)
                     gamesAdapter.updateGames(result)
                 }
                 else-> onError()
-            }*/
+            }
         }
 
         }

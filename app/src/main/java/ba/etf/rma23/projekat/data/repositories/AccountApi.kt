@@ -22,7 +22,7 @@ interface AccountApi {
     suspend fun deleteGame(
         @Path("aid") id: String,
         @Path("gid") igdb_id: Int
-    ) : Response<String>
+    ) : Response<DeleteResponse>
 
     @GET("{aid}/games")
     suspend fun getSavedGames(
@@ -45,5 +45,10 @@ interface AccountApi {
 
     data class InputClass(
        @SerializedName("game") var game: SendGame
+    )
+
+    data class DeleteResponse(
+        @SerializedName("success") var success: String?,
+        @SerializedName("message") var error: String?
     )
 }

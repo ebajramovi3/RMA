@@ -3,6 +3,8 @@ package ba.etf.rma23.projekat.data.repositories
 import android.util.Log
 import ba.etf.rma23.projekat.Game
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.json.JSONObject
 
 
@@ -38,15 +40,23 @@ object AccountGamesRepository {
     suspend fun saveGame(game: Game): Game{
         var body = AccountApi.InputClass(AccountApi.SendGame(game.id, game.title))
 
-        var i = AccountApiConfig.retrofit.saveGame(getHash(), body)
+        AccountApiConfig.retrofit.saveGame(getHash(), body)
         return game
     }
 
-    suspend fun removeGame(id: Int): String {
-        return AccountApiConfig.retrofit.deleteGame(getHash(), id).body() ?: ""
+    suspend fun removeGame(id: Int): Boolean {
+       if(AccountApiConfig.retrofit.deleteGame(getHash(), id).body()?.success != null)
+        return true
+        return false
     }
 
-
-
-
+    suspend fun getGamesContainingString(query: String): List<Game> {
+        return withContext(Dispatchers.IO) {
+            val games = getSavedGames()
+            val filteredGames = games.filter { game ->
+                game.title.contains(query, ignoreCase = true)
+            }
+            return@withContext filteredGames
+        }
+    }
 }
