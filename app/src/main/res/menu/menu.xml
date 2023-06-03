@@ -8,4 +8,8 @@
         android:id="@id/gameDetailsItem"
         android:icon="@android:drawable/ic_menu_recent_history"
         android:title="Game details" />
+    <item
+        android:id="@id/favoritesItem"
+        android:icon="@android:drawable/ic_menu_view"
+        android:title="Favorite games" />
 </menu>

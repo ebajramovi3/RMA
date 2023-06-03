@@ -12,9 +12,14 @@
             android:id="@+id/action_homeItem_to_gameDetailsItem"
             app:destination="@id/gameDetailsItem">
             <argument
-                android:name="game_title"
-                app:argType="string" />
+                android:name="game_id"
+                app:argType="integer" />
         </action>
+        <action
+            android:id="@+id/action_homeItem_to_favoritesItem"
+            app:destination="@id/favoritesItem">
+        </action>
+
     </fragment>
     <fragment
         android:id="@+id/gameDetailsItem"
@@ -22,6 +27,24 @@
         android:label="GameDetailsFragment" >
         <action
             android:id="@+id/action_gameDetailsItem_to_homeItem"
+            app:destination="@id/homeItem" />
+        <action
+            android:id="@+id/action_gameDetailsItem_to_favoritesFragment"
+            app:destination="@id/favoritesItem" />
+    </fragment>
+    <fragment
+        android:id="@+id/favoritesItem"
+        android:name="ba.etf.rma23.projekat.FavoritesFragment"
+        android:label="FavoritesFragment" >
+        <action
+            android:id="@+id/action_favoritesItem_to_gameDetailsItem"
+            app:destination="@id/gameDetailsItem">
+        <argument
+            android:name="game_id"
+            app:argType="integer" />
+    </action>
+        <action
+            android:id="@+id/action_favoritesItem_to_homeItem"
             app:destination="@id/homeItem" />
     </fragment>
 </navigation>

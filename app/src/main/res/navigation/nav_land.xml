@@ -9,8 +9,8 @@
         android:name="ba.etf.rma23.projekat.GameDetailsFragment"
         android:label="GameDetailsFragment" >
         <argument
-            android:name="game_title"
-            app:argType="string"
+            android:name="game_id"
+            app:argType="integer"
             />
     </fragment>
 </navigation>

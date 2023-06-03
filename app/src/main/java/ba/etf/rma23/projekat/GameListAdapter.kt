@@ -30,9 +30,8 @@ class GameListAdapter(
         holder.itemView.setOnClickListener{ onItemClicked(games[position]) }
     }
 
-    fun updateGames(gamess: List<Game>) {
+    fun updateGames(games: List<Game>) {
         this.games = games
-        GamesRepository.gamesDisplayed = games
         notifyDataSetChanged()
     }
 

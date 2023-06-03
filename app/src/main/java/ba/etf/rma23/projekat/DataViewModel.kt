@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class DataViewModel : ViewModel() {
-    private final var gameTitle = MutableLiveData<String>()
+    private final var gameId = MutableLiveData<Int>()
 
-    fun setData(title :String){
-        gameTitle.value = title
+    fun setData(id: Int){
+        gameId.value = id
     }
 
-    fun getSelectedData(): LiveData<String>{
-        return gameTitle
+    fun getSelectedData(): LiveData<Int>{
+        return gameId
     }
 }

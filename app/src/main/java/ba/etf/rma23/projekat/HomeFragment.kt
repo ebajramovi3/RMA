@@ -23,6 +23,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class HomeFragment: Fragment() {
@@ -31,7 +32,9 @@ class HomeFragment: Fragment() {
     private var gamesList = GameData.getAll()
     private lateinit var viewModel: DataViewModel
     private lateinit var searchButton: Button
+    private lateinit var sortButton: Button
     private lateinit var searchText: EditText
+
     companion object {
         fun newInstance(): HomeFragment = HomeFragment()
     }
@@ -45,6 +48,7 @@ class HomeFragment: Fragment() {
             false
         )
 
+        sortButton = view.findViewById(R.id.sort_button)
         games = view.findViewById(R.id.game_list)
         games.layoutManager = LinearLayoutManager(activity)
 
@@ -53,22 +57,36 @@ class HomeFragment: Fragment() {
         }
         games.adapter = gamesAdapter
         gamesAdapter.updateGames(gamesList)
+        if (gamesList.isEmpty())
+            sortButton.isEnabled = false
 
         searchButton = view.findViewById(R.id.search_button)
         searchButton.setOnClickListener {
             searchText = view.findViewById(R.id.search_query_edittext)
-            val scope = CoroutineScope(Job() + Dispatchers.Main)
-            scope.launch{
-            var result = GamesRepository.getGamesByName(searchText.text.toString())
-            when (result) {
-                is List<Game> -> {
-                    onSuccess(result)
-                    gamesAdapter.updateGames(result)
-                }
-                else-> onError()
-            }
-        }
 
+            val scope = CoroutineScope(Job() + Dispatchers.IO)
+            scope.launch {
+                gamesList = GamesRepository.getGamesByName(searchText.text.toString())
+
+                when (gamesList) {
+                    is List<Game> -> {
+                        withContext(Dispatchers.Main) {
+                            gamesAdapter.updateGames(gamesList)
+                            GameData.setGamesData(gamesList)
+                            sortButton.isEnabled = true
+                        }
+                    }
+                }
+            }
+            sortButton.setOnClickListener {
+                val scope = CoroutineScope(Job() + Dispatchers.IO)
+                scope.launch {
+                    gamesList = GamesRepository.sortGames()
+                    withContext(Dispatchers.Main) {
+                        gamesAdapter.updateGames(gamesList)
+                    }
+                }
+            }
         }
 
         return view
@@ -82,27 +100,17 @@ class HomeFragment: Fragment() {
 
             val navController = navHostFragment.navController
             val id = navController.currentDestination?.id
-            navController.popBackStack(id!!,true)
+            navController.popBackStack(id!!, true)
             navController.navigate(R.id.gameDetailsItem, bundleOf("game_title" to game.title))
 
         } else {
             viewModel = ViewModelProvider(requireActivity()).get(DataViewModel::class.java)
-            game.title?.let { viewModel.setData(it) }
+            game.id.let { viewModel.setData(it) }
 
-            var action = game.title?.let { HomeFragmentDirections.actionHomeItemToGameDetailsItem(it) }
+            var action = game.id.let { HomeFragmentDirections.actionHomeItemToGameDetailsItem(it) }
             if (action != null) {
                 findNavController().navigate(action)
             }
         }
-    }
-
-    fun onSuccess(games: List<Game>){
-        val toast = Toast.makeText(context, "Game found", Toast.LENGTH_SHORT)
-        toast.show()
-        gamesAdapter.updateGames(games)
-    }
-    fun onError() {
-        val toast = Toast.makeText(context, "Search error", Toast.LENGTH_SHORT)
-        toast.show()
     }
 }

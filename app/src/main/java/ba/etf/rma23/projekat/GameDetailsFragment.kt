@@ -2,15 +2,23 @@ package ba.etf.rma23.projekat
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
+import ba.etf.rma23.projekat.data.repositories.GamesRepository
 import ba.unsa.etf.rma.spirala1.R
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 class GameDetailsFragment : Fragment() {
     private lateinit var game: Game
@@ -26,6 +34,8 @@ class GameDetailsFragment : Fragment() {
     private lateinit var impressionsView: RecyclerView
     private lateinit var impressionsAdapter: UserImpressionsListAdapter
     private lateinit var impressions: List<UserImpression>
+    private lateinit var addButton: Button
+    private lateinit var removeButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,18 +52,46 @@ class GameDetailsFragment : Fragment() {
         publisher = view.findViewById(R.id.publisher_textview)
         description = view.findViewById(R.id.description_textview)
         genre = view.findViewById(R.id.genre_textview)
+        addButton = view.findViewById(R.id.add_button)
+        removeButton = view.findViewById(R.id.remove_button)
 
         impressionsView = view.findViewById(R.id.user_impressions_list)
-
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         impressionsView.layoutManager = layoutManager
         impressionsAdapter = UserImpressionsListAdapter(listOf())
         impressionsView.adapter = impressionsAdapter
-        game = GameData.getDetails(arguments?.getString("game_title", "")!!)
+        game = GameData.getGame(arguments?.getInt("game_id", 0)!!)
+        addButton.isEnabled = true
+
+        val favGames = GameData.favoriteGames
+        for(i in favGames.indices){
+            if(favGames[i].id == game.id) {
+                addButton.isEnabled = false
+            }
+        }
 
         impressions = game.userImpressions.sortedByDescending { it.timestamp }
-
         populateDetails()
+
+        addButton.setOnClickListener {
+            val scope = CoroutineScope(Job() + Dispatchers.IO)
+            scope.launch {
+                AccountGamesRepository.saveGame(game)
+                GameData.favoriteGames.add(game)
+            }
+            addButton.isEnabled = false
+            removeButton.isEnabled = true
+        }
+
+        removeButton.setOnClickListener {
+            val scope = CoroutineScope(Job() + Dispatchers.IO)
+            scope.launch {
+                AccountGamesRepository.removeGame(game.id)
+                GameData.favoriteGames.removeIf { it -> it.id == game.id }
+            }
+            addButton.isEnabled = true
+            removeButton.isEnabled = false
+        }
 
         return view
     }
