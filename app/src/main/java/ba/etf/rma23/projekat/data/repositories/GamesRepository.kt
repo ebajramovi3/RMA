@@ -2,6 +2,8 @@ package ba.etf.rma23.projekat.data.repositories
 
 import android.util.Log
 import ba.etf.rma23.projekat.Game
+import ba.etf.rma23.projekat.GameData
+import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository.getAge
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -11,7 +13,7 @@ import java.util.Date
 import kotlin.math.roundToInt
 
 object GamesRepository {
-    var gamesDisplayed: List<Game> = emptyList()
+    private var gamesDisplayed = emptyList<Game>()
     suspend fun getGamesByName(name:String):List<Game>{
         return withContext(Dispatchers.IO) {
             val response = IGDBApiConfig.retrofit.getGamesByName(name)
@@ -44,11 +46,10 @@ object GamesRepository {
         val favorites = savedGames.associateBy { it.title }
         val sortedGames = mutableListOf<Game>()
 
-        for (game in savedGames) {
-            if (gamesDisplayed.contains(game)) {
+        for (game in savedGames)
+            if (gamesDisplayed.contains(game))
                 sortedGames.add(game)
-            }
-        }
+
         sortedGames.sortBy { it.title }
         val remainingGames = gamesDisplayed.filterNot { it.title in favorites.keys }
         remainingGames.sortedBy { it.title }
@@ -56,4 +57,27 @@ object GamesRepository {
 
         return sortedGames
     }
+
+    suspend fun getGamesSafe(name:String):List<Game>{
+        var ageRating = arrayOf(3, 7, 12, 16, 18, 1, 3, 1, 10, 13, 17, 18)
+        if(getAge()==0)
+            return listOf()
+        val games = getGamesByName(name)
+        val safeGames: MutableList<Game> = mutableListOf()
+
+        for(i in games.indices)
+        {
+            if(games[i].esrbRating == "null")
+                safeGames.add(games[i])
+            else
+            {
+                var value = (games[i].esrbRating.toDouble() - 1).toInt()
+                if(ageRating[value] < getAge())
+                    safeGames.add(games[i])
+            }
+        }
+        GameData.setGamesData(safeGames)
+        return safeGames
+    }
+
 }
