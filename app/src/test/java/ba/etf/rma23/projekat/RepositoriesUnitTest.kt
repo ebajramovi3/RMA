@@ -67,7 +67,7 @@ class RepositoriesUnitTest {
         var res = GamesRepository.getGamesByName("Age of Empires")
         assertThat(res, CoreMatchers.hasItem<Game>(Matchers.hasProperty("id",CoreMatchers.equalTo(24273))))
     }
-/*
+
     @Test
     fun a5_getGamesSafe() = runBlocking {
         AccountGamesRepository.setAge(10)
@@ -76,7 +76,7 @@ class RepositoriesUnitTest {
 
         var res2 = GamesRepository.getGamesByName("Hitman")
         assertThat(res2, CoreMatchers.hasItem<Game>(Matchers.hasProperty("id",CoreMatchers.equalTo(11157))))
-    }*/
+    }
 
     //ako vam ovaj test nekada pada, a nekada prolazi vjerovatno je ista greška kao u a2
     @Test
