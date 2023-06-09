@@ -43,7 +43,7 @@ object GamesRepository {
 
     suspend fun sortGames():List<Game>{
         val savedGames = AccountGamesRepository.getSavedGames()
-        val favorites = savedGames.associateBy { it.title }
+        val favorites = savedGames.associateBy { it.id }
         val sortedGames = mutableListOf<Game>()
 
         for (game in savedGames)
@@ -51,7 +51,7 @@ object GamesRepository {
                 sortedGames.add(game)
 
         sortedGames.sortBy { it.title }
-        val remainingGames = gamesDisplayed.filterNot { it.title in favorites.keys }
+        val remainingGames = gamesDisplayed.filterNot { it.id in favorites.keys }
         remainingGames.sortedBy { it.title }
         sortedGames.addAll(remainingGames)
 
