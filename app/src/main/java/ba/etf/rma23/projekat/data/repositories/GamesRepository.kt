@@ -72,7 +72,7 @@ object GamesRepository {
             else
             {
                 var value = (games[i].esrbRating.toDouble() - 1).toInt()
-                if(ageRating[value] < getAge())
+                if(value > 12 || ageRating[value] < getAge())
                     safeGames.add(games[i])
             }
         }

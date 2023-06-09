@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
 import ba.etf.rma23.projekat.data.repositories.GamesRepository
 import ba.unsa.etf.rma.spirala1.R
+import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -107,12 +108,9 @@ class GameDetailsFragment : Fragment() {
         publisher.text = game.publisher
         description.text = game.description
 
-        val context: Context = coverImage.context
-        var id: Int = context.resources
-            .getIdentifier(game.coverImage, "drawable", context.packageName)
-        if (id == 0) id = context.resources
-            .getIdentifier("game_picture", "drawable", context.packageName)
-        coverImage.setImageResource(id)
+        val imageUrl = game.coverImage
+        Picasso.get().load("https:"+imageUrl).fit().into(coverImage);
+
 
         impressionsAdapter.updateUserImpressions(impressions)
     }

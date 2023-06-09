@@ -84,6 +84,8 @@ object AccountGamesRepository {
             if(games[i].esrbRating == "null")
                 continue
             var value = (games[i].esrbRating.toDouble() - 1).toInt()
+            if(value > 12)
+                continue
             if(ageRating[value] > getAge())
                if(!removeGame(games[i].id))
                    return false

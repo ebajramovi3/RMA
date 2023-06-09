@@ -29,9 +29,10 @@
 
                 <ImageView
                     android:id="@+id/cover_imageview"
-                    android:layout_width="319dp"
-                    android:layout_height="97dp"
-                    android:layout_weight="1"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:maxHeight="300dp"
+                    android:maxWidth="300dp"
                     app:srcCompat="@drawable/game_picture" />
 
                 <LinearLayout
@@ -49,6 +50,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="8dp"
+                            android:layout_marginStart="8dp"
                             android:text="Add" />
                         <Button
                             android:id="@+id/remove_button"

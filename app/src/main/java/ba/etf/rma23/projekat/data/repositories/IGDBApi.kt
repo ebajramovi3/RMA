@@ -18,7 +18,7 @@ interface IGDBApi {
     @GET("games/")
     suspend fun getGamesByName(
         @Query("search") name: String,
-        @Query("fields") fields: String = "name,release_dates.human,age_ratings.rating,game_engines.name,genres.name,involved_companies.developer,platforms.name,cover.url,rating",
+        @Query("fields") fields: String = "name,release_dates.human,age_ratings.rating,game_engines.name,genres.name,involved_companies.developer,platforms.name,cover.url,rating,summary",
         @Query("limit") limit: Int = 10
     ): Response<List<GetResponseGame>>
 
