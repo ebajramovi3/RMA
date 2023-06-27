@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-class HeightWrappingLayoutManager(context: Context, orientation: Int) : LinearLayoutManager(context) {
+class HeightWrappingLayoutManager(context: Context, orientation: Int) : LinearLayoutManager(context, orientation, false) {
 
     override fun onLayoutChildren(recycler: RecyclerView.Recycler?, state: RecyclerView.State?) {
         super.onLayoutChildren(recycler, state)
