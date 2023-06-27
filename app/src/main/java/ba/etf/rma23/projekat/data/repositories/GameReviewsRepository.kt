@@ -27,14 +27,15 @@ object GameReviewsRepository {
         return withContext(Dispatchers.IO) {
             val db = AppDatabase.getInstance(context)
             val offlineReviews = db.reviewDao().getOfflineReviews()
+            db.reviewDao().deleteAll()
             var sentReviews = 0
 
             offlineReviews.forEach { review ->
                 if(sendReview(context, review)) {
-                    review.online = true
-                    db.reviewDao().update(review)
                     sentReviews++
                 }
+                else
+                db.reviewDao().insertAll(review)
             }
 
             return@withContext sentReviews

@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
         var scope = CoroutineScope(Job() + Dispatchers.IO)
         scope.launch {
             var db = AppDatabase.getInstance(this@MainActivity)
-            db.reviewDao().deleteAll()
             var review = GameReview(0, null, 0, true, "", "")
             db.reviewDao().insertAll(review)
             db.reviewDao().deleteOnline()
