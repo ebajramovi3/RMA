@@ -128,6 +128,36 @@
                 android:layout_height="wrap_content"
                 android:text="TextView" />
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Review"
+                />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/review_edittext"
+                    />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Rating"
+                />
+
+            <RatingBar
+                android:id="@+id/rating_bar_impression"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                />
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/send_impressions"
+                    android:text="Send Impressions"
+                    />
 
         </LinearLayout>
     </ScrollView>
