@@ -2,6 +2,7 @@ package ba.etf.rma23.projekat
 
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -9,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import ba.etf.rma23.projekat.data.repositories.AppDatabase
+import ba.etf.rma23.projekat.data.repositories.GameReview
 import ba.etf.rma23.projekat.data.repositories.GameReviewsRepository
 import ba.unsa.etf.rma.spirala1.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -26,6 +29,14 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home_activity)
+        var scope = CoroutineScope(Job() + Dispatchers.IO)
+        scope.launch {
+            var db = AppDatabase.getInstance(this@MainActivity)
+            db.reviewDao().deleteAll()
+            var review = GameReview(0, null, 0, true, "", "")
+            db.reviewDao().insertAll(review)
+            db.reviewDao().deleteOnline()
+        }
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController

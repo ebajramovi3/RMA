@@ -22,6 +22,6 @@ interface ReviewDao {
     @Query("DELETE FROM gamereview")
     suspend fun deleteAll()
 
-    @Update
-    suspend fun update(review: GameReview)
+    @Query("DELETE FROM gamereview WHERE online=:isOnline")
+    suspend fun deleteOnline(isOnline: Boolean = true)
 }
