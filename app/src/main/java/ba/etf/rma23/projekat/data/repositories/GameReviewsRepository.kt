@@ -32,9 +32,9 @@ object GameReviewsRepository {
 
             offlineReviews.forEach { review ->
                 if(sendReview(context, review)) {
+                    review.online = true
                     sentReviews++
                 }
-                else
                 db.reviewDao().insertAll(review)
             }
 
