@@ -3,16 +3,17 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.android.library' version '8.0.0-alpha06' apply false
     id 'androidx.navigation.safeargs'
+    id 'kotlin-kapt'
 }
 
 android {
     namespace 'ba.unsa.etf.rma.spirala1'
-    compileSdk 33
+    compileSdk 34
 
     defaultConfig {
         applicationId "ba.unsa.etf.rma.spirala1"
         minSdk 24
-        targetSdk 33
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -26,43 +27,15 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_19
+        targetCompatibility JavaVersion.VERSION_19
     }
     kotlinOptions {
-        jvmTarget = '11'
+        jvmTarget = "19"
     }
 }
 
 dependencies {
-    /*implementation 'androidx.core:core-ktx:1.10.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.test.espresso:espresso-contrib:3.5.1'
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.5.3'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.5.3'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation("androidx.navigation:navigation-testing:2.5.3")
-    androidTestImplementation "android.arch.core:core-testing:1.1.1"
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation 'androidx.test:core-ktx:1.5.0'
-    testImplementation("org.hamcrest:hamcrest:x.y.z")
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.5.1'
-    // ViewModel
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
-    // LiveData
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
-    //dodano
-    androidTestImplementation 'androidx.test.ext:junit-ktx:1.1.5'
-    androidTestImplementation ('androidx.test.espresso:espresso-contrib:3.5.1')
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.5.1')
-    androidTestImplementation('androidx.test:runner:1.5.2')
-    androidTestImplementation('androidx.test:rules:1.5.0')
-    debugImplementation("androidx.fragment:fragment-testing:1.5.7")*/
-
     debugImplementation "androidx.fragment:fragment-testing:1.5.7"
     debugImplementation 'androidx.test:core:1.5.0'
     debugImplementation 'androidx.test:monitor:1.6.1'
@@ -104,4 +77,9 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:+"
     implementation 'com.google.code.gson:gson:+'
     implementation 'com.squareup.picasso:picasso:+'
+
+    implementation("androidx.room:room-runtime:+")
+    annotationProcessor "androidx.room:room-compiler:+"
+    implementation("androidx.room:room-ktx:+")
+    kapt("androidx.room:room-compiler:+")
 }

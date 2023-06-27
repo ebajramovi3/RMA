@@ -22,7 +22,7 @@ import java.util.stream.IntStream.range
 @RunWith(AndroidJUnit4::class)
 class OwnEspressoTests {
     @get:Rule
-    var homeRule: ActivityScenarioRule<HomeActivity> = ActivityScenarioRule(HomeActivity::class.java)
+    var homeRule: ActivityScenarioRule<MainActivity> = ActivityScenarioRule(MainActivity::class.java)
 
     /**
      * Test omogućava provjeru ispravnog rada aplikacije u lanscape orijentaciji.
@@ -36,7 +36,7 @@ class OwnEspressoTests {
     @Test
     fun testLandscape() {
 
-        val activityScenario = ActivityScenario.launch(HomeActivity::class.java)
+        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
 
         activityScenario.onActivity { activity ->
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
@@ -84,7 +84,7 @@ class OwnEspressoTests {
      */
     @Test
     fun testPortrait() {
-        val activityScenario = ActivityScenario.launch(HomeActivity::class.java)
+        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
 
         activityScenario.onActivity { activity ->
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -190,7 +190,7 @@ class OwnEspressoTests {
      */
     @Test
     fun switchOrientations(){
-        val activityScenario = ActivityScenario.launch(HomeActivity::class.java)
+        val activityScenario = ActivityScenario.launch(MainActivity::class.java)
         activityScenario.onActivity { activity ->
             activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
         }

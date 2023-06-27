@@ -1,14 +1,8 @@
 package ba.etf.rma23.projekat.data.repositories
 
-import android.icu.lang.UCharacter.getAge
-import android.util.Log
 import ba.etf.rma23.projekat.Game
-import ba.etf.rma23.projekat.GameData
-import com.google.gson.Gson
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
-
 
 object AccountGamesRepository {
     private var hash: String = "f513d7bf-74cd-4c04-bfa5-3d83b82cc552"

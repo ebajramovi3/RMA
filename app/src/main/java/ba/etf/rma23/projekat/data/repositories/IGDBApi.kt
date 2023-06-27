@@ -7,6 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.GET
 import retrofit2.http.Headers
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface IGDBApi {
@@ -20,6 +21,17 @@ interface IGDBApi {
         @Query("search") name: String,
         @Query("fields") fields: String = "name,release_dates.human,age_ratings.rating,game_engines.name,genres.name,involved_companies.developer,platforms.name,cover.url,rating,summary",
         @Query("limit") limit: Int = 10
+    ): Response<List<GetResponseGame>>
+
+    @Headers(
+        "Accept: application/json",
+        "Client-ID: z7m2bhsg2rlkhbcz1je5fa8zwfp8el",
+        "Authorization: Bearer qp3ssei7vyrps6mdg5p3f1ckaceo85"
+    )
+    @GET("games/{id}")
+    suspend fun getGamesById(
+        @Path("id") id: Int,
+        @Query("fields") fields: String = "name,release_dates.human,age_ratings.rating,game_engines.name,genres.name,involved_companies.developer,platforms.name,cover.url,rating,summary",
     ): Response<List<GetResponseGame>>
 
     @Headers(

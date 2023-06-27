@@ -9,8 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
-import ba.etf.rma23.projekat.HomeFragmentDirections
-import ba.etf.rma23.projekat.data.repositories.AccountGamesRepository
+import ba.etf.rma23.projekat.data.repositories.GameReviewsRepository
 import ba.unsa.etf.rma.spirala1.R
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +18,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
-class HomeActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     private var lastGameId: Int? = null
     private lateinit var viewModel: DataViewModel
     private lateinit var navController: NavController
@@ -65,10 +64,11 @@ class HomeActivity : AppCompatActivity() {
         if (lastGameId == null)
             navView.menu.findItem(R.id.gameDetailsItem).isEnabled = false
 
+        viewModel.getSelectedData().observe(this) {
+            lastGameId = it
+        }
         navView.setOnItemSelectedListener { item ->
-            viewModel.getSelectedData().observe(this) {
-                lastGameId = it
-            }
+
             if (!navView.menu.findItem(R.id.gameDetailsItem).isEnabled && lastGameId != null)
                 navView.menu.findItem(R.id.gameDetailsItem).isEnabled = true
 
@@ -122,6 +122,6 @@ class HomeActivity : AppCompatActivity() {
     private fun doOnLandscape(){
         val id = navController.currentDestination?.id
         navController.popBackStack(id!!,true)
-        navController.navigate(R.id.gameDetailsItem, bundleOf("game_id" to GameData.favoriteGames[0].id))
+        navController.navigate(R.id.gameDetailsItem, bundleOf("game_id" to 1905))
     }
 }
